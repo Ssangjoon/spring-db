@@ -1,7 +1,10 @@
 package hello.jdbc.service;
 
 import hello.jdbc.domain.Member;
+import hello.jdbc.repository.MemberRepository;
 import hello.jdbc.repository.MemberRepositoryV3;
+import hello.jdbc.repository.MemberRepositoryV4_1;
+import hello.jdbc.repository.MemberRepositoryV5;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -31,9 +34,9 @@ class MemberServiceV4Test {
     public static final String MEMBER_B = "memberB";
     public static final String MEMBER_EX = "ex";
     @Autowired
-    MemberRepositoryV3 memberRepository;
+    MemberRepository memberRepository;
     @Autowired
-    MemberServiceV3_3 memberService;
+    MemberServiceV4 memberService;
     @TestConfiguration
     static class TestConfig{
         private final DataSource dataSource;
@@ -41,16 +44,18 @@ class MemberServiceV4Test {
             this.dataSource = dataSource;
         }
         @Bean
-        MemberRepositoryV3 memberRepositoryV3(){
-            return new MemberRepositoryV3(dataSource);
+        MemberRepository memberRepository(){
+            //return new MemberRepositoryV4_1(dataSource); //단순 예외 변환
+            //return new MemberRepositoryV4_2(dataSource); //스프링 예외 변환
+            return new MemberRepositoryV5(dataSource); //JdbcTemplate;
         }
         @Bean
-        MemberServiceV3_3 memberServiceV3_3(){
-            return new MemberServiceV3_3(memberRepositoryV3());
+        MemberServiceV4 memberServiceV4(){
+            return new MemberServiceV4(memberRepository());
         }
     }
     @AfterEach
-    void after() throws SQLException {
+    void after() {
         memberRepository.delete(MEMBER_A);
         memberRepository.delete(MEMBER_B);
         memberRepository.delete(MEMBER_EX);
@@ -64,7 +69,7 @@ class MemberServiceV4Test {
     }
     @Test
     @DisplayName("정상 이체")
-    void accountTransfer() throws SQLException {
+    void accountTransfer() {
         //given
         Member memberA = new Member(MEMBER_A, 10000);
         Member memberB = new Member(MEMBER_B, 10000);
@@ -81,7 +86,7 @@ class MemberServiceV4Test {
     }
     @Test
     @DisplayName("이체중 예외 발생")
-    void accountTransferEx() throws SQLException {
+    void accountTransferEx() {
         //given
         Member memberA = new Member(MEMBER_A, 10000);
         Member memberEx = new Member(MEMBER_EX, 10000);
