@@ -64,5 +64,6 @@ public class UncheckedAppTest {
         public RuntimeSQLException(Throwable cause) {
             super(cause);
         }
+
     }
 }

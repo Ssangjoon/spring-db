@@ -7,7 +7,9 @@ import org.springframework.jdbc.support.JdbcUtils;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.NoSuchElementException;
-
+/**
+ * JDBC - DataSource 사용, JdbcUtils 사용
+ */
 @Slf4j
 public class MemberRepositoryV1 {
     private final DataSource dataSource;
