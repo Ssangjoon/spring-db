@@ -9,7 +9,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 
-@Import(MemoryConfig.class)
+//@Import(MemoryConfig.class)
+@Import(JdbcTemplateV1Config.class)
+/**
+ * 여기서는 컨트롤러만 컴포넌트 스캔을 사용하고 나머지는 직접 수동 등록한다.
+ * 지정하지 않으면 현재 패키지 있는 위치와 그 하위가 전부 컴포넌트 스캔대상이된다.
+ */
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
 public class ItemServiceApplication {
 
@@ -17,6 +22,14 @@ public class ItemServiceApplication {
 		SpringApplication.run(ItemServiceApplication.class, args);
 	}
 
+	/**
+	 * 특정 프로필인 경우에만 해당 스프링 빈을 등록한다. 여기서는 local이라는 이름의 프로필이 사용되는 경우에만 등록한다.
+	 * -> 스프링은 로딩 시점에 application.properties 의 spring.profiles.active 속성을 읽어서 프로필로 사용한다.
+	 * 이 프로필은 로컬(나의 PC), 운영 환경, 테스트 실행 등등 다양한 환경에 따라서 다른 설정을 할 때 사용하는 정보이다.
+	 * 참고로 프로필을 지정하지 않으면 default 프로필이 실행된다.
+	 * @param itemRepository
+	 * @return
+	 */
 	@Bean
 	@Profile("local")
 	public TestDataInit testDataInit(ItemRepository itemRepository) {
