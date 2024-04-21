@@ -18,7 +18,8 @@ import javax.sql.DataSource;
 //@Import(JdbcTemplateV2Config.class)
 //@Import(JdbcTemplateV3Config.class)
 //@Import(MybatisConfig.class)
-@Import(JpaConfig.class)
+//@Import(JpaConfig.class)
+@Import(QuerydslConfig.class)
 /**
  * 여기서는 컨트롤러만 컴포넌트 스캔을 사용하고 나머지는 직접 수동 등록한다.
  * 지정하지 않으면 현재 패키지 있는 위치와 그 하위가 전부 컴포넌트 스캔대상이된다.
